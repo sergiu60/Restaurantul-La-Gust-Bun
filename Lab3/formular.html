@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rezervare - La Gust Bun</title>
+  <link rel="stylesheet" href="styles.css" />
+  <style>
+    .pagina-formular {
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 50px 20px 80px;
+    }
+
+    .titlu-formular {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.2rem;
+      color: var(--culoare-principala);
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    .subtitlu-formular {
+      text-align: center;
+      color: var(--culoare-text-secundar);
+      font-style: italic;
+      margin-bottom: 40px;
+    }
+
+    .formular-rezervare {
+      background: white;
+      border-radius: var(--raza);
+      padding: 40px;
+      box-shadow: var(--umbra);
+    }
+
+    .grup-camp {
+      margin-bottom: 22px;
+    }
+
+    .grup-camp label {
+      display: block;
+      font-weight: 700;
+      font-size: 0.85rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--culoare-text-secundar);
+      margin-bottom: 8px;
+    }
+
+    .camp-input {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid var(--culoare-bej);
+      border-radius: 8px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.95rem;
+      color: var(--culoare-text);
+      background: var(--culoare-crem);
+      transition: var(--tranzitie);
+      outline: none;
+    }
+
+    .camp-input:focus {
+      border-color: var(--culoare-auriu);
+      background: white;
+    }
+
+    .camp-input.eroare {
+      border-color: #c0392b;
+    }
+
+    .mesaj-eroare {
+      color: #c0392b;
+      font-size: 0.8rem;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .rand-dublu {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 600px) {
+      .rand-dublu { grid-template-columns: 1fr; }
+      .formular-rezervare { padding: 25px; }
+    }
+
+    .buton-rezerva {
+      width: 100%;
+      padding: 15px;
+      background: var(--culoare-principala);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Lato', sans-serif;
+      font-size: 1rem;
+      font-weight: 700;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: var(--tranzitie);
+      margin-top: 10px;
+      box-shadow: 0 4px 15px rgba(139, 37, 0, 0.3);
+    }
+
+    .buton-rezerva:hover {
+      background: var(--culoare-accentuata);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(139, 37, 0, 0.4);
+    }
+
+    /* Panoul de confirmare */
+    #panou-confirmare {
+      display: none;
+      background: white;
+      border-radius: var(--raza);
+      padding: 50px 40px;
+      box-shadow: var(--umbra);
+      text-align: center;
+      animation: fadeInUp 0.5s ease;
+    }
+
+    .icon-confirmare {
+      font-size: 4rem;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    .titlu-confirmare {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      color: var(--culoare-principala);
+      margin-bottom: 15px;
+    }
+
+    .detalii-confirmare {
+      background: var(--culoare-crem);
+      border-radius: 8px;
+      padding: 20px;
+      margin: 25px 0;
+      text-align: left;
+    }
+
+    .detalii-confirmare p {
+      padding: 8px 0;
+      border-bottom: 1px dashed var(--culoare-bej);
+      color: var(--culoare-text-secundar);
+      font-size: 0.95rem;
+    }
+
+    .detalii-confirmare p:last-child { border-bottom: none; }
+
+    .detalii-confirmare strong {
+      color: var(--culoare-principala);
+      margin-right: 8px;
+    }
+
+    .buton-nou {
+      display: inline-block;
+      margin-top: 20px;
+      padding: 12px 28px;
+      background: var(--culoare-principala);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      font-family: 'Lato', sans-serif;
+      font-size: 0.9rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: var(--tranzitie);
+      box-shadow: 0 4px 15px rgba(139, 37, 0, 0.3);
+    }
+
+    .buton-nou:hover {
+      background: var(--culoare-accentuata);
+    }
+
+    select.camp-input {
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B4C3B' stroke-width='2' fill='none'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 14px center;
+      padding-right: 40px;
+    }
+  </style>
+</head>
+
+ <script src="script.js"></script>
+<body>
+
+  <header class="antet-pagina">
+    <h1 class="titlu-restaurant">La Gust Bun</h1>
+    <div class="linie-decorativa"><span>✦</span></div>
+    <p class="subtitlu-restaurant">Bucătărie Italiană Autentică</p>
+  </header>
+
+  <main class="pagina-formular">
+
+    <h2 class="titlu-formular">Rezervare Masă</h2>
+    <p class="subtitlu-formular">Completați formularul și vă confirmăm rezervarea</p>
+
+    <!-- FORMULAR -->
+    <div id="sectiune-formular">
+      <div class="formular-rezervare">
+
+        <div class="rand-dublu">
+          <div class="grup-camp">
+            <label for="nume">Nume și Prenume</label>
+            <input type="text" id="nume" class="camp-input" placeholder="Ion Popescu" />
+            <span class="mesaj-eroare" id="eroare-nume">Introduceți numele complet.</span>
+          </div>
+          <div class="grup-camp">
+            <label for="telefon">Telefon</label>
+            <input type="tel" id="telefon" class="camp-input" placeholder="07XX XXX XXX" />
+            <span class="mesaj-eroare" id="eroare-telefon">Număr de telefon invalid.</span>
+          </div>
+        </div>
+
+        <div class="grup-camp">
+          <label for="email">Email</label>
+          <input type="email" id="email" class="camp-input" placeholder="email@exemplu.com" />
+          <span class="mesaj-eroare" id="eroare-email">Introduceți o adresă email validă.</span>
+        </div>
+
+        <div class="rand-dublu">
+          <div class="grup-camp">
+            <label for="data">Data rezervării</label>
+            <input type="date" id="data" class="camp-input" />
+            <span class="mesaj-eroare" id="eroare-data">Selectați o dată viitoare.</span>
+          </div>
+          <div class="grup-camp">
+            <label for="ora">Ora</label>
+            <select id="ora" class="camp-input">
+              <option value="">Selectați ora</option>
+              <option>12:00</option>
+              <option>13:00</option>
+              <option>14:00</option>
+              <option>18:00</option>
+              <option>19:00</option>
+              <option>20:00</option>
+              <option>21:00</option>
+            </select>
+            <span class="mesaj-eroare" id="eroare-ora">Selectați ora.</span>
+          </div>
+        </div>
+
+        <div class="grup-camp">
+          <label for="persoane">Număr de persoane</label>
+          <select id="persoane" class="camp-input">
+            <option value="">Selectați</option>
+            <option>1</option>
+            <option>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5</option>
+            <option>6+</option>
+          </select>
+          <span class="mesaj-eroare" id="eroare-persoane">Selectați numărul de persoane.</span>
+        </div>
+
+        <div class="grup-camp">
+          <label for="mentiuni">Mențiuni speciale (opțional)</label>
+          <textarea id="mentiuni" class="camp-input" rows="3" placeholder="Alergii, ocazii speciale..."></textarea>
+        </div>
+
+        <button class="buton-rezerva" onclick="proceseazaFormular()">Confirmă Rezervarea</button>
+
+        <a href="index.html" style="display:block; text-align:center; margin-top:15px;" class="buton-inapoi">← Înapoi la meniu</a>
+
+
+      </div>
+    </div>
+
+    <!-- CONFIRMARE -->
+    <div id="panou-confirmare">
+      <span class="icon-confirmare">🎉</span>
+      <h3 class="titlu-confirmare">Rezervare Confirmată!</h3>
+      <p style="color: var(--culoare-text-secundar);">Vă așteptăm cu drag. Detaliile rezervării:</p>
+
+      <div class="detalii-confirmare" id="detalii-afisate"></div>
+
+      <button class="buton-nou" onclick="resetFormular()">Rezervare Nouă</button>
+      <br>
+      <a href="index.html" class="buton-inapoi" style="margin-top: 15px;">← Înapoi la meniu</a>
+    </div>
+
+  </main>
+
+  <footer class="subsol">
+    <p>© 2026 <span>La Gust Bun</span> · Toate drepturile rezervate</p>
+  </footer>
+
+  <script>
+    // Setează data minimă = azi
+    const azi = new Date().toISOString().split('T')[0];
+    document.getElementById('data').min = azi;
+
+    function valideaza() {
+      let valid = true;
+
+      const campuri = [
+        { id: 'nume',     eroare: 'eroare-nume',     test: v => v.trim().split(' ').length >= 2 },
+        { id: 'telefon',  eroare: 'eroare-telefon',  test: v => /^[0-9+\s]{9,15}$/.test(v.trim()) },
+        { id: 'email',    eroare: 'eroare-email',    test: v => /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v) },
+        { id: 'data',     eroare: 'eroare-data',     test: v => v && v >= azi },
+        { id: 'ora',      eroare: 'eroare-ora',      test: v => v !== '' },
+        { id: 'persoane', eroare: 'eroare-persoane', test: v => v !== '' },
+      ];
+
+      campuri.forEach(({ id, eroare, test }) => {
+        const el = document.getElementById(id);
+        const err = document.getElementById(eroare);
+        if (!test(el.value)) {
+          el.classList.add('eroare');
+          err.style.display = 'block';
+          valid = false;
+        } else {
+          el.classList.remove('eroare');
+          err.style.display = 'none';
+        }
+      });
+
+      return valid;
+    }
+
+    function proceseazaFormular() {
+      if (!valideaza()) return;
+
+      const nume     = document.getElementById('nume').value.trim();
+      const telefon  = document.getElementById('telefon').value.trim();
+      const email    = document.getElementById('email').value.trim();
+      const data     = document.getElementById('data').value;
+      const ora      = document.getElementById('ora').value;
+      const persoane = document.getElementById('persoane').value;
+      const mentiuni = document.getElementById('mentiuni').value.trim();
+
+      // Formatare dată
+      const dataObj = new Date(data);
+      const dataFormatata = dataObj.toLocaleDateString('ro-RO', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' });
+
+      // Construire HTML confirmare
+      let html = `
+        <p><strong>👤 Nume:</strong> ${nume}</p>
+        <p><strong>📞 Telefon:</strong> ${telefon}</p>
+        <p><strong>📧 Email:</strong> ${email}</p>
+        <p><strong>📅 Data:</strong> ${dataFormatata}</p>
+        <p><strong>🕐 Ora:</strong> ${ora}</p>
+        <p><strong>👥 Persoane:</strong> ${persoane}</p>
+      `;
+      if (mentiuni) html += `<p><strong>📝 Mențiuni:</strong> ${mentiuni}</p>`;
+
+      document.getElementById('detalii-afisate').innerHTML = html;
+      document.getElementById('sectiune-formular').style.display = 'none';
+      document.getElementById('panou-confirmare').style.display = 'block';
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function resetFormular() {
+      document.getElementById('sectiune-formular').style.display = 'block';
+      document.getElementById('panou-confirmare').style.display = 'none';
+      document.querySelectorAll('.camp-input').forEach(el => { el.value = ''; el.classList.remove('eroare'); });
+      document.querySelectorAll('.mesaj-eroare').forEach(el => el.style.display = 'none');
+    }
+  </script>
+
+</body>
+</html>
